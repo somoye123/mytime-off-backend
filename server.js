@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const EmployeeRoute = require("./routes/EmployeeRoute");
-const port = process.env.PORT || 3030;
+const env = require("./env");
 const app = express();
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb://localhost:27017/timeoff")
+  .connect(env.mongodb_url)
   .then(() => {
     console.log("Successfully connected to MongoDB");
   })
@@ -18,6 +18,12 @@ mongoose
 
 app.use(cors());
 
+// logger middleware
+app.use((req,res,next)=> {
+  console.log(`[${new Date().toTimeString}]: ${req.method} ${req.url}`);
+  next();
+});
+
 // Add middlewares for parsing JSON and urlencoded data and populating `req.body`
 app.use(express.urlencoded({ extended: false }));
 
@@ -25,6 +31,6 @@ app.use(express.json());
 
 app.use("/employee", EmployeeRoute);
 
-app.listen(port).on("listening", () => {
-  console.log(`💘 app is listening on ${port}`);
+app.listen(env.port).on("listening", () => {
+  console.log(`💘 app is listening on ${env.port}`);
 });

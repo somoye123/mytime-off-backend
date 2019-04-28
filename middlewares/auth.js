@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET = "LEV3LUP!74";
+const env = require("../env");
 /**
  * Auth Middleware that checks if authorization header exist in the request  and token contained within is valid
  */
@@ -15,7 +15,7 @@ module.exports = function(req, res, next){
 
         const token = authHeader.split(" ")[1];
 
-        const tokenData = jwt.verify(token, SECRET);
+        const tokenData = jwt.verify(token, env.jwt_secret);
 
         req.user = tokenData.id;
 

@@ -3,17 +3,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const EmployeeModel = require("../models/employeemodel");
 const AuthMiddleware = require("../middlewares/auth");
+const env = require("../env");
 const router = express.Router();
-const dotevn = require("dotenv");
-dotevn.config();
-const SECRET = "LEV3LUP!74";
+
 
 // Create Employee Account
 router.post("/SignUp", async function(req, res) {
   try {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     const employee = await EmployeeModel.create(req.body);
-    const token = jwt.sign({ id: employee._id }, SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: employee._id }, env.jwt_secret, { expiresIn: "1h" });
     const result = employee.toJSON();
     delete result["password"];
     res.status(200).json({
@@ -56,9 +55,7 @@ router.post("/Login", async function(req, res) {
         .status(401)
         .json({ status: "error", message: "Invalid Login details" });
 
-    // const result = employee.toJSON();
-    // delete result["password"];
-    const token = jwt.sign({ id: employee.id }, SECRET);
+    const token = jwt.sign({ id: employee.id }, env.jwt_secret);
     res.status(200).json({ status: "success", data: { token } });
   } catch (error) {
     res.status(500).json({ status: "error", message: "error occured" });
