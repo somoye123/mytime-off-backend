@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config();
 const EmployeeRoute = require("./routes/EmployeeRoute");
 const port = process.env.PORT || 3030;
 const app = express();
