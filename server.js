@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const EmployeeRoute = require("./routes/EmployeeRoute");
+const LeaveRequestRoute = require("./routes/LeaveRequestRoute");
 const env = require("./env");
 const app = express();
 
@@ -10,7 +11,7 @@ const app = express();
 mongoose
   .connect(env.mongodb_url, { useNewUrlParser: true, useCreateIndex: true })
   .then(() => {
-    console.log("Successfully connected to MongoDB");
+    console.log("🚌 Successfully connected to MongoDB");
   })
   .catch(err => {
     console.log("An error occured while conencting to MongoDB", err);
@@ -20,7 +21,9 @@ app.use(cors());
 
 // logger middleware
 app.use((req, res, next) => {
-  console.log(`[${new Date().toTimeString()}]: ${req.method} ${req.url}`);
+  console.log(
+    `🔥🍕[${new Date().toTimeString()}]: ${req.method} ${req.url}🔥🍕`
+  );
   next();
 });
 
@@ -31,6 +34,8 @@ app.use(express.json());
 
 app.use("/employee", EmployeeRoute);
 
+app.use("/leave", LeaveRequestRoute);
+
 app.listen(env.port).on("listening", () => {
-  console.log(`💘 app is listening on ${env.port}`);
+  console.log(`💘 app is listening on ${env.port} 🚀`);
 });

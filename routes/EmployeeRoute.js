@@ -83,11 +83,12 @@ router.get("/", async function(req, res) {
   }
 });
 
+// Get an employee profile details
 router.get("/profile", AuthMiddleware, async function(req, res) {
   try {
     const employee = await EmployeeModel.findById(req.user);
 
-    res.json({ status: "Success", data: employee });
+    res.json({ status: "Success", data: employee});
   } catch (err) {
     console.log(err);
 
