@@ -24,6 +24,7 @@ const LeaveRequestSchema = new mongoose.Schema({
   employee: {
     // The leave request employee's ID
     type: String,
+    ref: "Employee",
     required: true
   }
 });
