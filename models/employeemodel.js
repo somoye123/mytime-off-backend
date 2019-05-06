@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 /**
  * mongoose writer schema
@@ -11,11 +12,11 @@ const employeeSchema = new mongoose.Schema({
   },
   firstName: {
     type: String,
-    required: true,
+    required: true
   },
   lastName: {
     type: String,
-    required: true,
+    required: true
   },
   dob: {
     type: String
@@ -30,13 +31,13 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    lowercase: true,
+    lowercase: true
   },
   country: {
-    type: String,
+    type: String
   },
   time_zone: {
-    type: String,
+    type: String
   },
   password: {
     type: String,
@@ -44,10 +45,21 @@ const employeeSchema = new mongoose.Schema({
     minlength: 6,
     select: false
   }
+});
 
+// Pre save hook that hashes passwords
+employeeSchema.pre("save", function(done) {
+  if (!this.isNew) return done();
+
+  bcrypt.hash(this.passowrd, 10, (err, hash) => {
+    if (err) return done(err);
+
+    this.passowrd = hash;
+    done();
+  });
 });
 
 //model which provides us with an interface to iteract with our data
-const EmployeeModel = mongoose.model('Employee', employeeSchema);
+const EmployeeModel = mongoose.model("Employee", employeeSchema);
 
 module.exports = EmployeeModel;
