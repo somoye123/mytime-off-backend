@@ -7,12 +7,11 @@ const EmployeeModel = require("../models/employeemodel");
 /**
  *Create Employee Account
  */
-const CreateEmployee = async function(req, res) {
+const CreateEmployee = async function (req, res) {
   try {
+    req.body.password = await bcrypt.hash(req.body.password, 10);
     const employee = await EmployeeModel.create(req.body);
-    const token = jwt.sign({ id: employee._id }, env.jwt_secret, {
-      expiresIn: "1h"
-    });
+    const token = jwt.sign({ id: employee._id }, env.jwt_secret, { expiresIn: "1h" });
     const result = employee.toJSON();
     delete result["password"];
     res.status(200).json({
