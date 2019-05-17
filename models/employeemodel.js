@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 /**
- * mongoose writer schema
+ * Mongoose Employee schema which is a description/blueprint of how we want our data to look like
  */
 
 const employeeSchema = new mongoose.Schema({
@@ -18,19 +18,21 @@ const employeeSchema = new mongoose.Schema({
     required: true
   },
   dob: {
-    type: String
+    type: String,
+    required: true
   },
   department: {
-    type: String
+    type: String,
+    required: true
   },
   manager: {
-    type: String
+    type: String,
+    required: true
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    lowercase: true
   },
   country: {
     type: String
@@ -43,6 +45,14 @@ const employeeSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
     select: false
+  },
+  numberOfLeave: {
+    type: Number,
+    default: 20
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
   }
 });
 

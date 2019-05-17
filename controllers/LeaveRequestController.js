@@ -1,9 +1,16 @@
 const LeaveRequestModel = require("../models/leaveRequestModel");
+function validateDate(date) {
+  var selectedDate = new Date(date);
+  var now = new Date();
+  now.setHours(0, 0, 0, 0);
+  if (selectedDate < now) {
+    return true
+  } else {
+    return false
+  }
+}
 
-/**
- * Create a new leave request
- */
-
+// Create a new leave request
 const CreateLeaveRequest = async function(req, res) {
   try {
     const leaveRequest = await LeaveRequestModel.create({
@@ -31,13 +38,13 @@ const GetLeaveRequest = async function(req, res) {
   try {
     const leaveRequests = await LeaveRequestModel.find({
       employee: req.user
-    }).populate("employee", "firstName lastName");
+    }).populate("employee", "firstName lastName department");
 
     res.json({ status: "success", data: leaveRequests });
   } catch (err) {
     res
       .status(500)
-      .json({ status: "error", message: "Could not find articles!" });
+      .json({ status: "error", message: "Could not find requests!" });
   }
 };
 
